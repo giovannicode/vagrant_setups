@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Before running script, change all CHANGE_xxxx variables.
+
 echo "update and upgrade"
 sudo apt-get update >/dev/null 2>&1
 sudo apt-get upgrade >/dev/null 2>&1
@@ -55,6 +57,9 @@ sudo mkdir -p www/gunicorn
 echo "Configure nginx"
 cat << EOF > /etc/nginx/sites-available/website
 server {
+
+    listen 8080;    
+
     server_name 127.0.0.1;
 
     #auth_basic "closed site";
@@ -96,7 +101,7 @@ EOF
 echo "Configure supervisor"
 cat << EOF > /etc/supervisor/conf.d/gunicorn.conf
 [program:gunicorn]
-command=gunicorn -c /home/vagrant/www/gunicorn/conf.py workout.wsgi
+command=gunicorn -c /home/vagrant/www/gunicorn/conf.py CHANGE_sitename.wsgi
 directory=/home/vagrant/www/website
 user=vagrant
 autostart=true
